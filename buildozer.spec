@@ -9,6 +9,7 @@ requirements = python3,kivy,yt-dlp,certifi,urllib3
 orientation = portrait
 android.permissions = INTERNET, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE
 android.api = 33
+android.sdk_path = /usr/local/lib/android/sdk
 android.minapi = 21
 android.archs = arm64-v8a, armeabi-v7a
 fullscreen = 0
