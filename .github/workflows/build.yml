@@ -33,11 +33,12 @@ jobs:
 
     # 🚀 Build APK
     - name: Build with Kivy Docker
-      uses: ArtemSBulgakov/buildozer-action@v1
-      id: buildozer
-      with:
-        command: buildozer android debug
-        buildozer_version: stable
+  uses: ArtemSBulgakov/buildozer-action@v1
+  id: buildozer
+  with:
+    command: buildozer android debug
+    buildozer_version: stable
+    user: root
 
     # 📦 Upload APK
     - name: Upload APK
