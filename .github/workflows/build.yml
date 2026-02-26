@@ -34,20 +34,20 @@ jobs:
         pip install buildozer cython
 
     - name: Install Android SDK cmdline-tools
-  run: |
-    mkdir -p $HOME/android-sdk/cmdline-tools
-    cd $HOME/android-sdk/cmdline-tools
-    wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-    unzip commandlinetools-linux-*.zip
-    mv cmdline-tools latest
+      run: |
+        mkdir -p $HOME/android-sdk/cmdline-tools
+        cd $HOME/android-sdk/cmdline-tools
+        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+        unzip commandlinetools-linux-*.zip
+        mv cmdline-tools latest
 
-    # 🔧 Create OLD tools path expected by Buildozer
-    mkdir -p $HOME/android-sdk/tools/bin
-    ln -s $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager $HOME/android-sdk/tools/bin/sdkmanager
+        # Create OLD tools path expected by Buildozer
+        mkdir -p $HOME/android-sdk/tools/bin
+        ln -s $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager $HOME/android-sdk/tools/bin/sdkmanager
 
-    echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-    echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
-    echo "PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH" >> $GITHUB_ENV
+        echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+        echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
+        echo "PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH" >> $GITHUB_ENV
 
     - name: Accept licenses & install SDK
       run: |
