@@ -34,10 +34,10 @@ jobs:
         pip install buildozer cython
 
     - name: Install Android SDK cmdline-tools
-  run: |
-    mkdir -p $HOME/android-sdk/cmdline-tools
-    cd $HOME/android-sdk/cmdline-tools
-    wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+      run: |
+        mkdir -p $HOME/android-sdk/cmdline-tools
+        cd $HOME/android-sdk/cmdline-tools
+        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
     unzip commandlinetools-linux-*.zip
     mv cmdline-tools latest
 
