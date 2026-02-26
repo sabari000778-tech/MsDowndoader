@@ -9,40 +9,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    # ✅ Install Android cmdline-tools (Fix sdkmanager error)
-    - name: Install Android SDK cmdline-tools
-      run: |
-        mkdir -p $HOME/android-sdk/cmdline-tools
-        cd $HOME/android-sdk/cmdline-tools
+      - name: Install Android SDK cmdline-tools
+        run: |
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          cd $HOME/android-sdk/cmdline-tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip commandlinetools-linux-*.zip
+          mv cmdline-tools latest
+          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
 
-        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-        unzip commandlinetools-linux-*.zip
-        mv cmdline-tools latest
+      - name: Install SDK Packages
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
-        echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-        echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
-        echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
+      - name: Build with Kivy Docker
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          command: buildozer android debug
+          buildozer_version: stable
+          user: root
 
-    # ✅ Install required SDK packages
-    - name: Install SDK Packages
-      run: |
-        yes | sdkmanager --licenses
-        sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
-
-    # 🚀 Build APK
-    - name: Build with Kivy Docker
-  uses: ArtemSBulgakov/buildozer-action@v1
-  id: buildozer
-  with:
-    command: buildozer android debug
-    buildozer_version: stable
-    user: root
-
-    # 📦 Upload APK
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: MsDownloader-APK
-        path: ${{ steps.buildozer.outputs.filename }}
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MsDownloader-APK
+          path: ${{ steps.buildozer.outputs.filename }}
